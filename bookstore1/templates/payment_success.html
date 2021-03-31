@@ -1,0 +1,71 @@
+{% extends "./base.html" %} {% block content %}
+<br>
+<br>
+
+<div class="jumbotron container p-2 alert alert-success text-center">
+    <h1 class="display-4"> <b> Payment Successful!</b> </h1>
+    <h1 class="display-6"> <b> Your Payment is Successfully Done!</b> </h1>
+    <h1 class="display-8"> Thank you {{user.first_name}} {{user.last_name}} for purchasing the books!</h1>
+    <p class="lead">See you again {{user.first_name}} {{user.last_name}}!</p>
+    <hr class="my-4">
+
+
+
+
+    <a class="btn btn-primary btn-lg" href="orders" role="button">Check Order Details</a>
+    <h4 class="display-8">your order will be delivered at: </h4>
+    <h4 class="display-8" id="demo" style="font-family: 'Courier New', Courier, monospace "></h4>
+    <h4 class="display-8">your order will be delivered by:
+        <p id="demo1" style="font-family: 'Courier New', Courier, monospace "></p>
+    </h4>
+
+</div>
+
+
+<script>
+    function addDays(date, days) {
+        const copy = new Date(Number(date))
+        copy.setDate(date.getDate() + days)
+        return copy
+    }
+    const months = ["jan", "feb", "march"]
+
+    const date = new Date();
+    const newDate = addDays(date, 5);
+    const d = "" + newDate.getDate() + ": " + months[newDate.getMonth()] + ": " + newDate.getFullYear()
+    document.getElementById("demo").innerHTML = d;
+
+
+    function WithoutTime(dateTime) {
+        var date = new Date(dateTime.getTime());
+        date.setHours(0, 0, 0, 0);
+        return date;
+
+
+    }
+
+    function capFirst(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    function generateName() {
+        var name1 = ["Ayush", "Meet", "Dhiraj", "Maulik", "Avinash", "Anand", "Jaydatt", "Mihir", "Bony", "dinesh", "Harsh", "Jay", "Gampu"];
+
+        var name2 = ["gandhi", "patel", "vachani", "modi", "mehta", "jivani", "dhami", "panchal", "gheewala", "dunani", "hargun", "desai", "dalal"];
+
+        var name = capFirst(name1[getRandomInt(0, name1.length + 1)]) + ' ' + capFirst(name2[getRandomInt(0, name2.length + 1)]);
+        return name;
+
+    }
+
+    document.getElementById('demo1').innerHTML = generateName();
+    //document.write(WithoutTime(new Date()));
+
+    //	});
+</script>
+
+{% endblock%}

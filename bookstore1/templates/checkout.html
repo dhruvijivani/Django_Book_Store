@@ -1,0 +1,137 @@
+{% extends "./base.html" %} {% load crispy_forms_tags %} {% load cart_tags %} {% block content %}
+<style>
+    .animate {
+        font-size: 50px;
+        border-bottom: 2px solid #ccc;
+    }
+    
+    .animate span {
+        display: inline-block;
+    }
+    
+    .three span {
+        color: #3bf0f7;
+        opacity: 0;
+        transform: translate(-300px, 0) scale(0);
+        animation: sideSlide .5s forwards;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+    
+    .animate span:nth-of-type(2) {
+        animation-delay: .05s;
+    }
+    
+    .animate span:nth-of-type(3) {
+        animation-delay: .1s;
+    }
+    
+    .animate span:nth-of-type(4) {
+        animation-delay: .15s;
+    }
+    
+    .animate span:nth-of-type(5) {
+        animation-delay: .2s;
+    }
+    
+    .animate span:nth-of-type(6) {
+        animation-delay: .25s;
+    }
+    
+    .animate span:nth-of-type(7) {
+        animation-delay: .3s;
+    }
+    
+    .animate span:nth-of-type(8) {
+        animation-delay: .35s;
+    }
+    
+    @keyframes sideSlide {
+        60% {
+            transform: translate(20px, 0) scale(1);
+            color: #f85a2a;
+        }
+        80% {
+            transform: translate(20px, 0) scale(1);
+            color: #38ddb9;
+        }
+        98% {
+            transform: translate(0) scale(1.2);
+            color: #00f0ff;
+        }
+        99% {
+            transform: translate(0) scale(1);
+            opacity: 1;
+            color: #b03cf3;
+        }
+        100% {
+            transform: translate(0) scale(1);
+            opacity: 1;
+            color: red;
+        }
+    }
+</style>
+<div class="container">
+    <div class="p-2">
+        <div class="display-5">
+            <div class="animate three">
+                <span>C</span><span>H</span><span>E</span><span>C</span><span>K</span><span>O</span><span>U</span><span>T</span>
+
+            </div>
+
+        </div>
+        <hr>
+        <div class="row">
+
+            <div class="col-lg-5 border rounded p-3">
+
+                <form action="/checkout/" method="POST">
+                    {% csrf_token %} {{form|crispy}}
+                    <div class="form-group">
+                        <input type="submit" value="Checkout" class="btn btn-outline-dark">
+                    </div>
+                </form>
+            </div>
+            <div class="col">
+                <div class="display-5">
+                    <div class="animate three" style="font-size: 30px;">
+                        <hr>
+                        <span>O</span><span>R</span><span>D</span><span>E</span><span>R</span>
+                        <span>S</span><span>U</span><span>M</span><span>M</span><span>R</span><span>Y</span>
+
+                    </div>
+
+
+                </div>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Image</th>
+                            <th>Book</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in cart %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td> <img src="{{c.book.img.url}}" height="70px" width="50px" class="img rounded"></td>
+                            <td>{{c.book.name}}</td>
+                            <td>{{c.book.category}}</td>
+                            <td>{{c.quantity}}</td>
+                            <td>₹{{c.book.price}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+
+                <div class="display-5"><b>Total Payable Amount :₹{{cart|cal_total_payable_amount}}</b></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

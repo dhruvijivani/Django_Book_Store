@@ -1,0 +1,72 @@
+{% load static %} {% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookBYChoice</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            font-family: "Open Sans";
+            height: 100vh;
+            width: 100%;
+            background: url("{% static 'img/bg.jpg' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+        
+        .form-container {
+            margin-left: 40%;
+        }
+        
+        .mt-4 {
+            background: linear-gradient(rgba(59, 248, 248, 0.7), rgba(238, 204, 142, 0.5));
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <a class="navbar-brand" href="{% static '#' %}">
+            <img src="{% static 'img/logo.jpeg' %}" alt="logo" style="width:80px;">
+        </a>
+
+        <!-- Links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+
+            </li>
+        </ul>
+    </nav>
+    <div class="col-md-12" style="text-align: center;">
+        {% if messages %} {% for message in messages %}
+        <div class="alert alert-{{message.tags}}">
+            {{message}}
+        </div>
+        {% endfor %} {% endif %}
+    </div>
+    <div class="form-container">
+        <div class="col-lg-4 mx auto border rounded p-3 mt-4">
+            <form action="login" method="POST">
+                {% csrf_token %}
+                <h2 class="display-4" style="padding-top: 5px; text-align: center;">LOG IN</h2>
+                {{form|crispy}}
+                <div class="pass-link">
+                    <a href="{% url 'reset_password' %}">Forgot password?</a>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-info" value="Log in">
+                </div>
+                <p style="margin-bottom: 0px;">Not have an account?<a href="/accounts/signup">Sign Up</a></p>
+
+            </form>
+        </div>
+    </div>

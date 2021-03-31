@@ -1,0 +1,171 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>BookByChoice</title>
+    <style>
+        a:hover {
+            text-decoration: none;
+        }
+        
+        .hh {
+            padding-top: 0%;
+            padding-bottom: 0;
+            margin-bottom: 0;
+            background-color: #343A40;
+            font-family: cursive;
+            box-shadow: 0 0px 8px 4px rgba(0, 0, 0, 0.719);
+        }
+        
+        .glow {
+            font-size: 80px;
+            color: #fff;
+            text-align: center;
+            -webkit-animation: glow 0.5s ease-in-out infinite alternate;
+            -moz-animation: glow 0.5s ease-in-out infinite alternate;
+            animation: glow 0.5s ease-in-out infinite alternate;
+        }
+        
+        .card-img-top:hover,
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.7);
+        }
+        
+        @-webkit-keyframes glow {
+            from {
+                /* text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px red, 0 0 40px red, 0 0 50px red, 0 0 60px red, 0 0 70px red; */
+                text-shadow: 0 0 10px rgb(87, 194, 226), 0 0 10px rgb(38, 151, 155), 0 0 10px rgb(19, 129, 133), 0 0 10px rgb(6, 108, 116), 0 0 10px rgb(6, 165, 177);
+                /* text-shadow: 0 0 10px rgb(133, 0, 0), 0 0 10px rgb(133, 0, 0), 0 0 10px rgb(133, 0, 0), 0 0 10px rgb(133, 0, 0), 0 0 10px rgb(133, 0, 0); */
+            }
+            to {
+                text-shadow: 0 0 10px rgb(4, 80, 90), 0 0 10px rgb(0, 106, 133), 0 0 10px rgb(0, 133, 133), 0 0 10px rgb(0, 106, 133), 0 0 10px rgb(0, 124, 133);
+                /* text-shadow: 0 0 20px #fff, 0 0 30px tomato, 0 0 40px t, 0 0 50px , 0 0 60px tomato, 0 0 70px tomato, 0 0 80px tomato; */
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="hh">
+        <a href="#">
+            <h1 class="glow">BookByChoice</h1>
+        </a>
+    </div>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#"><b>BookByChoice</b></a>
+        <p style="padding-left: 60px;margin: 0px; color: rgb(235, 95, 14);" class="navbar-brand"><b> Welcome {{user.first_name}} {{user.last_name}}!!</i>
+            </b>
+        </p>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/"><i class="fa fa-home" aria-hidden="true"> Home <span class="sr-only">(current)</span></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/accounts/profile"> <i class="fa fa-user" aria-hidden="true"> My Profile</i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/store/cart/"><i class="fa fa-shopping-cart" aria-hidden="true"> Cart<span class="badge badge-info">{{request.session.cart|length }}</span></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/store/orders/">My Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/accounts/logout"><i class="fa fa-sign-out" aria-hidden="true"> Logout</i></a>
+                </li>
+
+            </ul>
+            <form action="search" class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" id="search" name="search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+    <!-- body -->
+    <div class="container-fluid mt-3">
+        <div class="col-md-12" style="text-align: center;">
+            {% if messages %} {% for message in messages %}
+            <div class="alert alert-{{message.tags}}">
+                <i class="fa fa-book" aria-hidden="true" style="color:blue;font-size: 24px;"></i> <strong>{{message}}</strong>
+            </div>
+            {% endfor %} {% endif %}
+        </div>
+        <div class="row">
+            <!-- filter -->
+            <div class="col-lg-3 mx-auto" style="background-color: beige;padding-top: 15px;border-radius: 10px">
+                <ul class=" list-group ">
+                    <!--tips: add .list-group-flush to the .list-group to remove some borders and rounded corners-->
+                    <!-- <li class="list-group-item active ">Active</li>
+                <li class="list-group-item ">Item</li> -->
+                    {% for category in categories %}
+                    <a href="/accounts/main1?category={{category.id}} " class="list-group-item list-group-item-action "> {{category.name}} </a>
+
+                </ul>
+                {% endfor %}
+            </div>
+
+
+            <!-- all books -->
+            <div id='books' class="col-lg-9 m-auto">
+                <div class="row mx-auto ml-3" style="background-color: beige;padding-top: 15px;border-radius: 10px;">
+
+                    {% for book in books %}
+
+                    <div class="card mx-auto mb-3 ml-10 " id={{book.id}} style="width: 18rem;">
+                        <img class="card-img-top " src="{{book.img.url}} " alt="Card image cap " style="height: 400px;">
+                        <div class="card-body ">
+                            <h5 class="card-title "><b>{{book.name}}</b></h5>
+                            <h6 class="card-title ">By {{book.author_name}}</h6>
+                            <p class="card-text ">₹{{book.price}}</p>
+                            <!-- <small>{{book.img.url}}</small> -->
+
+                        </div>
+                        <div class="card-footer p-0 no-gutters ">
+
+                            <a href="/addtocart/{{book.slug}}/{{book.category}}?return_url={{request.path}} " id='bt' class="btn btn-outline-dark btn-block ">Add To Cart</a>
+                        </div>
+                        <div class="card-footer p-0 ">
+
+                            <a href="/product/{{book.slug}} " class="btn btn-info btn-block ">Quick View</a>
+                        </div>
+                    </div>
+
+
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.min.js" integrity="sha256-JtQPj/3xub8oapVMaIijPNoM0DHoAtgh/gwFYuN5rik=" crossorigin="anonymous"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+
+
+</body>
+
+</html>

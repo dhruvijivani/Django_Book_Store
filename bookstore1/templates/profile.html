@@ -1,0 +1,54 @@
+{% extends "./base.html" %} {% load crispy_forms_tags %} {% block content %}
+<style>
+    body {
+        /* Base64 encoded transparent gif */
+        background-color: beige;
+    }
+    
+    #form:hover {
+        transform: scale(1.05);
+    }
+    
+    .account-img:hover {
+        transform: scale(1.05);
+    }
+</style>
+
+
+<div class="form-container">
+    <div class="col-md-8">
+        {% if messages %} {% for message in messages %}
+        <div class="alert alert-{{message.tags}}">
+            <center>{{message}}</center>
+        </div>
+        {% endfor %} {% endif %}
+    </div>
+    <div class="content-section">
+        <div class="media" style="align-self: center;padding-left: 35%;width:2000px;">
+            <img class="rounded-circle account-img" src="{{user.profile.image.url}}" height="150px" width="150px">
+            <div class="media-body">
+                <h2 class="account-heading">{{user.username}}</h2>
+                <p class="text-secondary">{{user.email}}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- form here -->
+
+
+    <div style="align-self: center;padding-left: 35%;width:2000px;">
+        <div class="col-lg-4 mx auto border rounded p-3 mt-4" id="form" style="background: linear-gradient(rgba(59, 248, 248, 0.7), rgba(238, 204, 142, 0.5))">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h1 class="display-4" style="text-align: center;">Profile Info</h1>
+                {{u_form|crispy}} {{p_form|crispy}}
+                <div class="form-group">
+                    <input type="submit" class="btn btn-info" value="Update" style="margin-left:188px ;">
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+{% endblock%}

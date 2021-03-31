@@ -1,0 +1,42 @@
+{% extends './base.html' %} {{error}} {% block content %} {% if books%}
+<center>
+    <h1>Search results: </h1>
+</center>
+
+<div class="container-fluid mt-3">
+
+    <div id='books' class="col-lg-9 m-auto" style="background-color: beige;padding-top: 15px;border-radius: 10px;">
+        <div class="row mx-auto ml-3">
+
+            {% for book in books %}
+
+            <div class="card mx-auto mb-3 ml-10 " id={{book.id}} style="width: 18rem;" data-aos="zoom-in-down" data-aos-duration="1500">
+                <img class="card-img-top " src="{{book.img.url}} " alt="Card image cap " style="height: 400px;">
+                <div class="card-body ">
+                    <h5 class="card-title "><b>{{book.name}}</b></h5>
+                    <h6 class="card-title ">By {{book.author_name}}</h6>
+                    <p class="card-text ">₹{{book.price}}</p>
+
+
+                </div>
+                <div class="card-footer p-0 no-gutters ">
+
+                    <a href="/addtocart/{{book.slug}}/{{book.category}}?return_url={{request.path}}" id='bt' class="btn btn-outline-dark btn-block ">Add To Cart</a>
+                </div>
+                <div class="card-footer p-0 ">
+
+                    <a href="/product/{{book.slug}} " class="btn btn-info btn-block ">Quick View</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+{% else %}
+<!-- <script>alert("book is not availble")</script> -->
+<center>
+    <h1>sorry! Book is not available!</h1>
+</center>
+
+{% endif %} {% endblock%}

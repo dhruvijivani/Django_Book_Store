@@ -1,0 +1,159 @@
+{% extends "./base.html" %} {% block content %}
+
+
+<style>
+    .rating>input {
+        display: none;
+    }
+    
+    .rating>label:before {
+        content: '\f005';
+        font-family: FontAwesome;
+        margin: 5px;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+    
+    .rating>label {
+        color: grey;
+        float: right;
+        cursor: pointer;
+        padding-top: 0px;
+        margin-top: 0;
+    }
+    
+    .rating>input:checked~label,
+    .rating:not(:checked)>label:hover,
+    .rating:not(:checked)>label:hover~label {
+        color: goldenrod;
+    }
+    
+    .rating>input:checked+label:hover,
+    .rating>input:checked~label:hover,
+    .rating>label:hover~input:checked~label,
+    .rating>input:checked~label:hover~label {
+        color: goldenrod
+    }
+</style>
+<div class="container-fluid mt-3">
+    <div class="col-md-12 text-center">
+        {% if messages %} {% for message in messages %}
+        <div class="alert alert-{{message.tags}}">
+            <strong> {{message}}</strong>
+        </div>
+        {% endfor %} {% endif %}
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="p-4 m-3 text-center mx-auto">
+                <img src="{{book.img.url}}" height="300" width="300" class="img-fluid" alt="">
+            </div>
+
+        </div>
+        <div class="col">
+            <br>
+            <br>
+            <div class="p-3 m-2">
+                <div class="display-4 ">
+                    <b> {{book.name}}</b><br>
+                    <p style="font-size:30px">Rating: {% if book.reviews.count == 0 %}
+                        <i class="fa fa-star{% if book.get_rating < 1 %}--o empty{% endif %}" style="color: goldenrod;"></i>
+                        <!-- <i class="fa fa-star-half{% if book.get_rating < 1.5 %}--o empty{% endif %}" style="color: goldenrod;"></i> -->
+                        <i class="fa fa-star{% if book.get_rating < 2 %}--o empty{% endif %}" style="color: goldenrod;"></i>
+                        <!-- <i class="fa fa-star-half{% if book.get_rating < 2.5 %}--o empty{% endif %}" style="color: goldenrod;"></i> -->
+                        <i class="fa fa-star{% if book.get_rating < 3 %}--o empty{% endif %}" style="color: goldenrod;"></i>
+                        <!-- <i class="fa fa-star-half{% if book.get_rating < 3.5 %}--o empty{% endif %}" style="color: goldenrod;"></i> -->
+                        <i class="fa fa-star{% if book.get_rating < 4 %}--o empty{% endif %}" style="color: goldenrod;"></i>
+                        <!-- <i class="fa fa-star-half{% if book.get_rating < 4.5 %}--o empty{% endif %}" style="color: goldenrod;"></i> -->
+                        <i class="fa fa-star{% if book.get_rating < 5 %}--o empty{% endif %}" style="color: goldenrod;"></i> 5.0 {% else %}
+                        <i class="fa fa-star{% if book.get_rating < 1 %}--o empty{% endif %}" style="color: goldenrod;"></i>
+                        <!-- <i class="fa fa-star-half{% if book.get_rating < 1.5 %}--o empty{% endif %}" style="color: goldenrod;"></i> -->
+                        <i class="fa fa-star{% if book.get_rating < 2 %}--o empty{% endif %}" style="color: goldenrod;"></i>
+                        <!-- <i class="fa fa-star-half{% if book.get_rating < 2.5 %}--o empty{% endif %}" style="color: goldenrod;"></i> -->
+                        <i class="fa fa-star{% if book.get_rating < 3 %}--o empty{% endif %}" style="color: goldenrod;"></i>
+                        <!-- <i class="fa fa-star-half{% if book.get_rating < 3.5 %}--o empty{% endif %}" style="color: goldenrod;"></i> -->
+                        <i class="fa fa-star{% if book.get_rating < 4 %}--o empty{% endif %}" style="color: goldenrod;"></i>
+                        <!-- <i class="fa fa-star-half{% if book.get_rating < 4.5 %}--o empty{% endif %}" style="color: goldenrod;"></i> -->
+                        <i class="fa fa-star{% if book.get_rating < 5 %}--o empty{% endif %}" style="color: goldenrod;"></i> {{book.get_rating|floatformat:1}} {% endif %}
+                    </p>
+                    <hr>
+                    <br>
+
+                    <p style="font-size:x-large">{{book.desc}}</p>
+                    <br>
+
+                </div>
+                <div class="col  rounded mt-3">
+                    <div class="p-2">
+
+                        <a href="/addtocart/{{book.slug}}/{{book.category}}?return_url={{request.path}}" class="btn btn-outline-dark btn-block"><i class="fa fa-shopping-cart"></i> Add To Cart</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <h2 class="subtitle p-4 m-3 mx-auto" style="font-size: 35px;"><strong>Reviews</strong></h2>
+    <div class="reviews-wrapper">
+        {% for review in book.reviews.all %}
+        <div class="p-4 m-3" style="background: #ddd;padding-bottom: 0px;">
+            <p>
+                <strong>Date:</strong>{{ review.date_added|date:"Y-m-d"}}<br>
+                <strong>User:</strong>{{review.user.first_name}} {{review.user.last_name}}<br>
+                <strong style="margin-bottom: 0;padding-bottom: 0;">Rate: </strong>
+                <fieldset class="rating">
+                    <i class="fa fa-star{% if review.stars < 1 %}--o empty{% endif %}" style="color: goldenrod;"></i>
+                    <i class="fa fa-star{% if review.stars < 2 %}--o empty{% endif %}" style="color: goldenrod;"></i>
+                    <i class="fa fa-star{% if review.stars < 3 %}--o empty{% endif %}" style="color: goldenrod;"></i>
+                    <i class="fa fa-star{% if review.stars < 4 %}--o empty{% endif %}" style="color: goldenrod;"></i>
+                    <i class="fa fa-star{% if review.stars < 5 %}--o empty{% endif %}" style="color: goldenrod;"></i>
+                </fieldset>
+                {{ review.content }}
+            </p>
+        </div>
+        {% empty %}
+        <div class="notification space-below" style="background: #ddd;padding-top: 10px;padding-bottom: 10px;border-radius: 10px;padding-left: 20px;margin-bottom: 10px;">
+            No reviews yet...
+        </div>
+        {% endfor %}
+    </div>
+    <div class="notification space-below" style="background-color: #ddd;border-radius: 10px;">
+        {% if request.user.is_authenticated %}
+        <form method="POST">
+            {% csrf_token %}
+            <div class="field">
+                <div class="field" style="width: 50%;">
+                    <h4 style="margin-left: 20px;padding-top: 10px;">Rate</h4>
+
+                    <div class="control col rating" style="margin-left: -50%;">
+                        <input type="radio" id="star5" name="stars" value="5" /><label for="star5" class="full"></label>
+                        <input type="radio" id="star4" name="stars" value="4" /><label for="star4" class="full"></label>
+                        <input type="radio" id="star3" name="stars" value="3" /><label for="star3" class="full"></label>
+                        <input type="radio" id="star2" name="stars" value="2" /><label for="star2" class="full"></label>
+                        <input type="radio" id="star1" name="stars" value="1" /><label for="star1" class="full"></label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="field" style="margin-bottom: 20px;width: 50%;">
+                <h4 style="margin-left: 20px;">Content</h4>
+                <div class="control" style="margin-left: 110px;">
+                    <textarea class='textarea' name="content" style="width: 500px;height: 100px;border-radius: 10px;"></textarea>
+
+                </div>
+                <div class="field " style="margin-top: 20px;">
+                    <div class="control">
+                        <button class="btn btn-outline-dark" style="margin-left: 50px;margin-bottom: 20px;">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        {% else %}
+        <p>Please sign in to add review!</p>
+        {% endif %}
+    </div>
+
+</div>
+</div>
+{% endblock%}

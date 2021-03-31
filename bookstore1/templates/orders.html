@@ -1,0 +1,158 @@
+{% extends "./base.html" %} {% load cart_tags %} {% block content %}
+<style>
+    .animate {
+        font-size: 50px;
+        border-bottom: 2px solid #ccc;
+    }
+    
+    .animate span {
+        display: inline-block;
+    }
+    
+    .three span {
+        color: #3bf0f7;
+        opacity: 0;
+        transform: translate(-300px, 0) scale(0);
+        animation: sideSlide .5s forwards;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+    
+    .animate span:nth-of-type(2) {
+        animation-delay: .05s;
+    }
+    
+    .animate span:nth-of-type(3) {
+        animation-delay: .1s;
+    }
+    
+    .animate span:nth-of-type(4) {
+        animation-delay: .15s;
+    }
+    
+    .animate span:nth-of-type(5) {
+        animation-delay: .2s;
+    }
+    
+    .animate span:nth-of-type(6) {
+        animation-delay: .25s;
+    }
+    
+    .animate span:nth-of-type(7) {
+        animation-delay: .3s;
+    }
+    
+    .animate span:nth-of-type(8) {
+        animation-delay: .35s;
+    }
+    
+    @keyframes sideSlide {
+        60% {
+            transform: translate(20px, 0) scale(1);
+            color: #f85a2a;
+        }
+        80% {
+            transform: translate(20px, 0) scale(1);
+            color: #38ddb9;
+        }
+        99% {
+            transform: translate(0) scale(1.2);
+            color: #00f0ff;
+        }
+        100% {
+            transform: translate(0) scale(1);
+            opacity: 1;
+            color: #b03cf3;
+        }
+    }
+</style>
+<div class="container">
+    <div class="col-md-12" style="text-align: center;padding-bottom: 20px;padding-top: 10px;">
+        <div class="animate three">
+            <span>M</span><span>Y</span>&nbsp;
+            <span>O</span><span>R</span><span>D</span><span>E</span><span>R</span><span>S</span>
+
+        </div>
+        <div class="card">{% if messages %} {% for message in messages %}
+            <div class="card-body cart">
+                <div class="col-sm-12 empty-cart-cls text-center"> <img src="https://www.datalumen.eu/wp-content/uploads/2015/04/20131108155920_99704.jpg" width="200" height="200" class="img-fluid mb-4 mr-3">
+                    <h3><strong>
+        {{message}}
+    </strong></h3>
+                    <h5>You have not placed any order yet!</h5><a href="/accounts/main1" class="btn btn-primary cart-btn-transform m-3" data-abc="true">continue shopping</a> {% endfor %}
+                </div>
+                <div>
+                    {% else %}
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Order_id</th>
+                                <th>Date</th>
+                                <th>Items</th>
+                                <th>Total_price</th>
+                                <th>Status</th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for order in orders %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{order.id}}</td>
+                                <td>{{order.date|date}}</td>
+                                <td>
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Image</th>
+                                                <th>Book</th>
+                                                <th>Category</th>
+                                                <th>Price</th>
+                                                <th>Quantity</th>
+                                                <th>Total</th>
+                                                <th>Total_price</th>
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            {% for oi in order.orderitem_set.all%}
+                                            <tr>
+                                                <td>{{forloop.counter}}</td>
+                                                <td><img height="60px" class="border" src="{{oi.Book.img.url}}" alt=""></td>
+                                                <td>{{oi.Book.name}}</td>
+                                                <td>{{oi.Book.category}}</td>
+                                                <td>₹{{oi.price}}</td>
+                                                <td>{{oi.quantity}}</td>
+                                                <td>{% multiply oi.quantity oi.price as result %}{{result}}</td>
+
+
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <b>₹{{order.total}}</b></td>
+                                <td>
+                                    <br>
+                                    <br> {% if order.order_status == "COMPLETED" %}
+                                    <span class="badge badge-success">{{order.order_status}}</span> {% elif order.order_status == "PENDING" %}
+                                    <span class="badge badge-danger">{{order.order_status}}</span> {% else %}
+                                    <span class="badge badge-warning">{{order.order_status}}</span> {% endif %}
+                                </td>
+
+
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% endif %}
+                </div>
+                {% endblock%}
